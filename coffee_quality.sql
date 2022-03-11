@@ -124,11 +124,13 @@ SET altitude_low_meters = (altitude + 0) * 0.3048,
 	altitude_high_meters = LEFT(SUBSTRING_INDEX(altitude, '-', -1),4) * 0.3048
 	WHERE altitude LIKE '%ft%';
     
-    -- 8a. Update Altitude related coolumns where alt > 10000 meters
+    -- 8a. Update Altitude related coolumns where alt > 10000 meters and alt<600
 UPDATE coffee
 SET altitude_low_meters = NULL, 
 	altitude_high_meters = NULL,
-    altitude = NULL WHERE altitude_high_meters>10000;
+    altitude = NULL WHERE altitude_high_meters NOT BETWEEN 600 AND 10000;
+
+	
     -- 9. Change None to NULL and Bluish-Green to Blue-Green
 UPDATE coffee
 SET color =
@@ -186,8 +188,6 @@ SELECT AVG(altitude_low_meters), AVG(altitude_high_meters), species FROM coffee
 SELECT species, Owner, Company, total_cup_points, aroma, flavor, aftertaste, acidity, body, balance, uniformity,
 	clean_cup, sweetness, cupper_points, altitude_low_meters, altitude_high_meters, Altitude FROM coffee 
 	ORDER BY total_cup_points DESC LIMIT 20;
-
-
 
 
 
